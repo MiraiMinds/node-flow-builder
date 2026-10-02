@@ -1,0 +1,489 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
+:root {
+  font-family: "DM Sans", sans-serif;
+  color: #172821;
+  background: #f6f7f2;
+  font-synthesis: none;
+  font-size: 16px;
+  --line: #dce2d9;
+  --green: #196443;
+  --muted: #58675e;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  outline-offset: 3px;
+}
+button {
+  border: 1px solid #cbd6cd;
+  border-radius: 7px;
+  background: #fff;
+  color: #233c2f;
+  padding: 9px 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+button:hover:not(:disabled) {
+  background: #edf4ed;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+button.primary {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+button.primary:hover:not(:disabled) {
+  background: #124c32;
+}
+button.danger {
+  color: #993a31;
+  margin-top: 18px;
+}
+a {
+  color: var(--green);
+  text-decoration: none;
+}
+header {
+  height: 65px;
+  padding: 0 28px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+}
+header > a:last-child {
+  margin-left: auto;
+  font-size: 0.875rem;
+}
+.brand {
+  font-size: 1.65rem;
+  letter-spacing: -1.1px;
+  font-weight: 700;
+}
+.brand span {
+  font-size: 0.925rem;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--muted);
+  margin-left: 15px;
+}
+.mode {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  padding: 6px 9px;
+  background: #edf1e8;
+  color: #465740;
+}
+.mode.live {
+  background: #fff1d8;
+  color: #785313;
+}
+.workspace-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 23px 28px;
+}
+.workspace-bar h1 {
+  font-size: 1.5rem;
+  letter-spacing: -0.7px;
+  margin: 0 0 7px;
+}
+.workspace-bar p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 365px;
+  border-block: 1px solid var(--line);
+  min-height: 650px;
+  height: calc(100vh - 253px);
+}
+.canvas-area {
+  min-width: 0;
+  position: relative;
+  padding: 66px 0 44px;
+  background: #f1f4ed;
+}
+.canvas-toolbar {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  right: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+}
+.canvas-toolbar span {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-right: 5px;
+}
+.canvas-toolbar button {
+  padding: 7px 9px;
+  font-size: 0.8rem;
+}
+.canvas-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 65px;
+  right: 20px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+}
+.flow-node {
+  background: #fff;
+  border: 1px solid #c9d5c9;
+  width: 260px;
+  border-radius: 10px;
+  padding: 17px;
+  box-shadow: 0 3px 10px #16342506;
+}
+.flow-node.selected {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.node-kind {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 11px;
+}
+.node-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #497357;
+}
+.startCall .node-dot {
+  background: #329970;
+}
+.endCall .node-dot {
+  background: #c98a59;
+}
+.globalNode {
+  background: #173a2c;
+  border-color: #173a2c;
+  color: #fff;
+}
+.globalNode .node-kind,
+.globalNode p {
+  color: #bfd1c3;
+}
+.flow-node strong {
+  font-size: 1rem;
+  letter-spacing: -0.3px;
+}
+.flow-node p {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: #5f6d62;
+  margin: 8px 0 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.node-detail {
+  font-size: 0.65rem;
+  display: inline-block;
+  background: #edf3ed;
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin: 9px 5px 0 0;
+  color: #44684e;
+}
+.react-flow__handle {
+  width: 10px;
+  height: 10px;
+  background: #557762;
+  border: 2px solid #fff;
+}
+.react-flow__edge-path {
+  stroke: #72927b;
+  stroke-width: 1.5;
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #126342;
+  stroke-width: 2.5;
+}
+.react-flow__edge-text {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  fill: #47624e;
+}
+aside {
+  background: #fff;
+  border-left: 1px solid var(--line);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+aside nav {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+  padding: 7px;
+  gap: 2px;
+}
+aside nav button {
+  flex: 1;
+  border: 0;
+  padding: 11px 4px;
+  font-size: 0.8rem;
+  background: transparent;
+  border-radius: 4px;
+}
+aside nav .active {
+  background: #edf3eb;
+  color: #15583c;
+}
+.panel {
+  overflow: auto;
+  padding: 22px;
+  min-width: 0;
+  border: 0;
+  margin: 0;
+}
+h2 {
+  font-size: 1.125rem;
+  letter-spacing: -0.25px;
+  margin: 0 0 13px;
+}
+h3 {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+}
+p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 18px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.field small,
+.muted {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid #cbd6cd;
+  border-radius: 5px;
+  background: #fcfdfa;
+  padding: 9px;
+  color: #213d2c;
+  font-size: 0.875rem;
+}
+textarea {
+  resize: vertical;
+  line-height: 1.6;
+  min-height: 70px;
+}
+.code,
+.mono,
+pre,
+code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.75rem;
+}
+.code {
+  line-height: 1.7;
+  tab-size: 2;
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin: 15px 0;
+}
+.check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  margin-top: 2px;
+}
+.section,
+.tool-selection {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 22px;
+}
+.section button {
+  margin: 4px 5px 4px 0;
+}
+.extraction {
+  border-left: 2px solid #bad1bc;
+  padding-left: 12px;
+  margin: 20px 0;
+}
+.call-pending {
+  padding: 12px;
+  background: #fff6e7;
+  border: 1px solid #ead8b8;
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+footer {
+  padding: 13px 28px;
+  background: #fff;
+}
+.status {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+details {
+  margin-top: 12px;
+}
+summary {
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: var(--green);
+}
+pre {
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+  background: #142a20;
+  color: #dce9dd;
+  padding: 16px;
+  border-radius: 6px;
+  max-height: 320px;
+}
+.error {
+  background: #fff1ed;
+  color: #8d3324;
+  border: 1px solid #edcfc4;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #196443;
+}
+@media (min-width: 1600px) {
+  main {
+    grid-template-columns: minmax(0, 1fr) 405px;
+  }
+  .panel {
+    padding: 26px;
+  }
+}
+@media (max-width: 1000px) {
+  .workspace-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .actions {
+    flex-wrap: wrap;
+  }
+  main {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+  .canvas-area {
+    height: 570px;
+  }
+  aside {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .panel {
+    max-height: 650px;
+  }
+  .canvas-toolbar {
+    left: 12px;
+  }
+  .canvas-caption {
+    left: 45px;
+  }
+}
+@media (max-width: 540px) {
+  header {
+    padding: 0 14px;
+    gap: 8px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 80px;
+  }
+  .brand span {
+    display: none;
+  }
+  .mode {
+    font-size: 0.65rem;
+  }
+  .workspace-bar {
+    padding: 18px 14px;
+  }
+  footer {
+    padding: 14px;
+  }
+  .canvas-area {
+    height: 490px;
+    padding-top: 92px;
+  }
+  .canvas-toolbar span {
+    display: none;
+  }
+  .canvas-caption {
+    font-size: 0.68rem;
+  }
+  main {
+    min-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
