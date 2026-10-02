@@ -88,6 +88,14 @@ try {
   await click("Create draft");
   await waitFor(() => document.body.textContent.includes("Revision 1"));
   await click("Tools");
+  await setField("Agent tools", "{");
+  await click("+ Order lookup example");
+  assert.equal(
+    field("Agent tools").value,
+    "{",
+    "Invalid edits must not be discarded by adding a sample",
+  );
+  await setField("Agent tools", "[]");
   await click("+ Order lookup example");
   await click("Node");
   await waitFor(() =>

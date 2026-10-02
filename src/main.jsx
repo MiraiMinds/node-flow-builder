@@ -837,11 +837,20 @@ function App() {
                 </p>
                 <button
                   onClick={() => {
-                    if (tools.some((t) => t.name === exampleTool.name)) {
-                      setError("lookup_order is already in the list.");
-                      return;
+                    try {
+                      const current = JSON.parse(toolsText);
+                      if (!Array.isArray(current))
+                        throw new Error("Tools must be a JSON array.");
+                      if (current.some((t) => t.name === exampleTool.name)) {
+                        throw new Error("lookup_order is already in the list.");
+                      }
+                      setToolsText(pretty([...current, exampleTool]));
+                      setError("");
+                    } catch (error) {
+                      setError(
+                        `Fix the existing tools JSON before adding a sample. ${error.message}`,
+                      );
                     }
-                    setToolsText(pretty([...tools, exampleTool]));
                   }}
                 >
                   + Order lookup example
