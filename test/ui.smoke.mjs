@@ -12,6 +12,7 @@ const base = `http://127.0.0.1:${server.address().port}`;
 const window = new Window({ url: base });
 const nativeFetch = globalThis.fetch;
 let connectionState = "unverified";
+const callRequests = [];
 try {
   for (const name of [
     "document",
@@ -35,6 +36,9 @@ try {
   globalThis.sessionStorage = window.sessionStorage;
   globalThis.confirm = () => true;
   globalThis.fetch = async (path, options) => {
+    if (path === "/api/mirai/v2/calls" && options?.method === "POST") {
+      callRequests.push(JSON.parse(options.body));
+    }
     const response = await nativeFetch(new URL(path, base), options);
     if (path === "/api/mirai/v2/phone-numbers") {
       const body = await response.json();
@@ -129,7 +133,7 @@ try {
   );
   await click("Phone");
   await click("Load numbers");
-  await setField("Workspace number", "pn_demo");
+  await setField("Calling route", "pn_demo");
   assert.equal(button("Call this number").disabled, true,
     "A ready number with an unverified connection cannot dial");
   connectionState = "verified";
@@ -150,6 +154,14 @@ try {
     document.body.textContent.includes("Demo only: no conversation ran"),
   );
   assert.equal(sessionStorage.getItem("mirai-pending-call"), null);
+  assert.equal(callRequests[0].phone_number_id, "pn_demo");
+  await setField("Calling route", "default");
+  assert.equal(button("Activate number"), undefined);
+  await click("Call this number");
+  await waitFor(() => callRequests.length === 2);
+  assert.equal(Object.hasOwn(callRequests[1], "phone_number_id"), false,
+    "The default route leaves number selection to the platform");
+  assert.equal(callRequests[1].agent_revision, 3);
   assert.equal(document.querySelector('[role="alert"]'), null);
   console.log(
     "PASS built UI: create, tools, save, inputs, publish, assign phone, call, results",

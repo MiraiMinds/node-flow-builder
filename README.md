@@ -47,11 +47,11 @@ Use the host your key was issued for. Keep `.env` out of Git. There are no
 5. Click **Agent → Publish saved draft**. Publishing makes the agent eligible
    for ordinary calls. Saving later edits to a published agent changes what
    new direct calls use; there is no second published branch behind a draft.
-6. In **Phone**, load a workspace number. Assign it for inbound calls, activate
-   it if needed, or call a destination from it. Live calls are billable and
-   require a number with `state: "ready"`, `connection_state: "verified"`,
-   and wallet credit. Outbound testing does not require changing the number's
-   inbound assignment. The sample disables recording.
+6. In **Phone**, choose **Platform default** if your deployment enables its
+   default calling route, or load and select a workspace number. A workspace
+   number needs `state: "ready"` and `connection_state: "verified"`.
+   Outbound testing does not require changing its inbound assignment. Live
+   calls use wallet credit; the sample disables recording.
 7. Use **Refresh call** and **View tool runs** to inspect the result. These are
    manual refreshes; there is no background polling or live audio in this app.
 
