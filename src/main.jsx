@@ -904,10 +904,10 @@ function App() {
             )}
             {tab === "Phone" && (
               <>
-                <h2>Connect a phone number</h2>
+                <h2>Choose a calling route</h2>
                 <p>
-                  Use a number already imported into your workspace. The
-                  cookbook covers provider setup and importing a number.
+                  Use the platform default where enabled, or a number imported
+                  into your workspace. The cookbook covers provider setup.
                 </p>
                 <button onClick={() => run(() => listNumbers())}>
                   Load numbers
@@ -917,12 +917,13 @@ function App() {
                     Load more
                   </button>
                 )}
-                <Field label="Workspace number">
+                <Field label="Calling route">
                   <select
                     value={numberId}
                     onChange={(e) => setNumberId(e.target.value)}
                   >
-                    <option value="">Choose a number</option>
+                    <option value="">Choose a route</option>
+                    <option value="default">Platform default</option>
                     {numbers.map((n) => (
                       <option key={n.id} value={n.id}>
                         {n.number} · {n.state}
@@ -930,6 +931,12 @@ function App() {
                     ))}
                   </select>
                 </Field>
+                {numberId === "default" && (
+                  <p className="muted">
+                    Mirai chooses the outgoing number. This route must be
+                    enabled on your API deployment.
+                  </p>
+                )}
                 {number && (
                   <>
                     <p className="muted mono">
@@ -1015,9 +1022,10 @@ function App() {
                       !agent ||
                       agent.draft ||
                       dirty ||
-                      !number ||
-                      number.state !== "ready" ||
-                      number.connection_state !== "verified" ||
+                      (numberId !== "default" &&
+                        (!number ||
+                          number.state !== "ready" ||
+                          number.connection_state !== "verified")) ||
                       !!pending
                     }
                     onClick={() =>
@@ -1029,7 +1037,9 @@ function App() {
                         const body = {
                           agent_id: agent.id,
                           agent_revision: agent.revision,
-                          phone_number_id: number.id,
+                          ...(numberId === "default"
+                            ? {}
+                            : { phone_number_id: number.id }),
                           channel: "phone",
                           to,
                           variables: JSON.parse(variablesText),
