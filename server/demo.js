@@ -9,7 +9,8 @@ export function createDemoClient() {
   let number = {
     id: "pn_demo",
     number: "+12025550100",
-    state: "active",
+    state: "ready",
+    connection_state: "verified",
     version: 1,
     agent_id: "",
   };
@@ -83,7 +84,7 @@ export function createDemoClient() {
           ...number,
           ...(method === "PATCH"
             ? { agent_id: body.agent_id }
-            : { state: "active" }),
+            : { state: "ready", connection_state: "verified" }),
           version: number.version + 1,
         };
       }

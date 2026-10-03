@@ -962,7 +962,10 @@ function App() {
                       Assign inbound agent
                     </button>
                     <button
-                      disabled={number.state === "active"}
+                      disabled={
+                        number.state === "ready" &&
+                        number.connection_state === "verified"
+                      }
                       onClick={() => {
                         if (
                           !confirm(
@@ -1013,7 +1016,8 @@ function App() {
                       agent.draft ||
                       dirty ||
                       !number ||
-                      number.state !== "active" ||
+                      number.state !== "ready" ||
+                      number.connection_state !== "verified" ||
                       !!pending
                     }
                     onClick={() =>

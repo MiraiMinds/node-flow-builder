@@ -49,7 +49,9 @@ Use the host your key was issued for. Keep `.env` out of Git. There are no
    new direct calls use; there is no second published branch behind a draft.
 6. In **Phone**, load a workspace number. Assign it for inbound calls, activate
    it if needed, or call a destination from it. Live calls are billable and
-   require an active number and wallet credit. The sample disables recording.
+   require a number with `state: "ready"`, `connection_state: "verified"`,
+   and wallet credit. Outbound testing does not require changing the number's
+   inbound assignment. The sample disables recording.
 7. Use **Refresh call** and **View tool runs** to inspect the result. These are
    manual refreshes; there is no background polling or live audio in this app.
 
