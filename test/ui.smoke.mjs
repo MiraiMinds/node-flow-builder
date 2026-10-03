@@ -11,6 +11,7 @@ await once(server, "listening");
 const base = `http://127.0.0.1:${server.address().port}`;
 const window = new Window({ url: base });
 const nativeFetch = globalThis.fetch;
+let connectionState = "unverified";
 try {
   for (const name of [
     "document",
@@ -33,8 +34,15 @@ try {
   globalThis.cancelAnimationFrame = window.cancelAnimationFrame.bind(window);
   globalThis.sessionStorage = window.sessionStorage;
   globalThis.confirm = () => true;
-  globalThis.fetch = (path, options) =>
-    nativeFetch(new URL(path, base), options);
+  globalThis.fetch = async (path, options) => {
+    const response = await nativeFetch(new URL(path, base), options);
+    if (path === "/api/mirai/v2/phone-numbers") {
+      const body = await response.json();
+      body.data.forEach((number) => { number.connection_state = connectionState; });
+      return new Response(JSON.stringify(body), { status: response.status });
+    }
+    return response;
+  };
   window.document.body.innerHTML = '<div id="root"></div>';
   const file = (
     await readdir(new URL("../dist/assets/", import.meta.url))
@@ -122,6 +130,14 @@ try {
   await click("Phone");
   await click("Load numbers");
   await setField("Workspace number", "pn_demo");
+  assert.equal(button("Call this number").disabled, true,
+    "A ready number with an unverified connection cannot dial");
+  connectionState = "verified";
+  await click("Load numbers");
+  assert.equal(button("Activate number").disabled, true,
+    "A ready, verified number does not need activation");
+  assert.equal(button("Call this number").disabled, false,
+    "A ready, verified number can dial a published agent");
   await click("Assign inbound agent");
   await waitFor(() =>
     document.body.textContent.includes("Inbound agent assigned"),
